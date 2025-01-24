@@ -1,0 +1,69 @@
+body {
+    background-image: linear-gradient(140deg, #c3e3f7 0%, #d2d3ec 50%, #aaacf5 75%);
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    background-color: #0f102c;
+    border: 2px solid #5f5f92;
+    border-radius: 16px;
+    padding: 8px;
+    width: 370px;
+    height: 450px;
+    gap: 10px;
+    box-shadow: 0 0 20px 0px #040404;
+}
+
+.display {
+    background-color: #e8e8f6;
+    border-radius: 10px;
+    font-size: 56px;
+    font-weight: 600;
+    color: #0f102c;
+    text-align: right;
+    padding: 6px;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    height: 100%;
+}
+
+.btn {
+    font-family: 'Courier New', Courier, monospace;
+    border: 0;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 28px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 20%;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+.lg-btn {
+    min-width: 49%;
+}
+
+.num-btn {
+    background-color: #c2c2fd;
+}
+
+.fun-btn {
+    background-color: #a3a3e6;
+}
+
+.ope-btn {
+    background-color: #6666e1;
+}
