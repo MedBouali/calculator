@@ -52,6 +52,10 @@ body {
     opacity: 0.8;
 }
 
+.btn:active {
+    opacity: 0.5;
+}
+
 .lg-btn {
     min-width: 49%;
 }
@@ -64,6 +68,6 @@ body {
     background-color: #a3a3e6;
 }
 
-.ope-btn {
+.ope-btn, .equ-btn {
     background-color: #6666e1;
 }
