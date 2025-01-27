@@ -9,6 +9,7 @@ const digitButtons = document.querySelectorAll(".num-btn");
 const operatorButtons = document.querySelectorAll(".ope-btn");
 const equalsButton = document.querySelector(".equ-btn");
 const functionButtons = document.querySelectorAll(".fun-btn");
+const messageErrorDiv = document.querySelector(".error-message");
 
 const add = function(a, b) {
     return a + b;
@@ -49,9 +50,10 @@ const onDigitButtonClick = function(digitButtonValue) {
     if(digitButtonValue === "." && displayContent === "") displayContent = "0.";
     if(digitButtonValue === "." && displayContent.includes(".")) digitButtonValue = "";
 
-    displayContent += digitButtonValue;
-    display.textContent = displayContent;
-    clearDisplay = false;
+    if(isWithinMaxLength(displayContent)) {
+        updateDisplay(displayContent + digitButtonValue);
+        clearDisplay = false;
+    }   
 }
 
 const onOperatorButtonClick = function(operatorButtonValue) {
@@ -63,10 +65,11 @@ const onOperatorButtonClick = function(operatorButtonValue) {
 }
 
 const onEqualsButtonClick = function() {
-    if(operator !== "" && clearDisplay === false) {
+    if(operator !== "" && !clearDisplay) {
         secondNumber = displayContent;
-        displayContent = String(operate(operator, firstNumber, secondNumber));
-        display.textContent = displayContent;
+        const operationResult = operate(operator, firstNumber, secondNumber);
+        updateDisplay(formatLargeNumber(operationResult));
+        
         operator = "";
         clearDisplay = true;
     }
@@ -76,27 +79,66 @@ const onAllClearButtonClick = function() {
     firstNumber = "";
     secondNumber = ""
     operator = "";
-    displayContent = "0";
-    display.textContent = displayContent;
+    updateDisplay("0");
     clearDisplay = true;
 }
 
 const onNegateButtonClick = function() {
     if(displayContent !== "0"){
         if(displayContent.startsWith("-")){
-            displayContent = displayContent.slice(1);
+            updateDisplay(displayContent.slice(1));
         } else {
-            displayContent = "-" + displayContent;
+            updateDisplay("-" + displayContent);
         }
-
-        display.textContent = displayContent;
     }
 }
 
 const onPercentageButtonClick = function() {
-    displayContent = String(parseFloat(displayContent) * 0.01);
-    display.textContent = displayContent;
+    const percentageResult = parseFloat(displayContent) * 0.01;
+    updateDisplay(formatLargeNumber(percentageResult));
+    
     clearDisplay = true;
+}
+
+const formatLargeNumber = function(number) {
+    let numberStr = String(number);
+
+    if(numberStr.length > 15){
+        let precision = 15;
+
+        while(numberStr.length > 15 && precision > 0) {
+            if(numberStr.includes(".")) {
+                numberStr = String(number.toExponential(precision) * 1);
+            } else {
+                numberStr = String(number.toExponential(precision));
+            }
+            precision--;
+        }
+    }
+
+    return numberStr;
+}
+
+const isWithinMaxLength = function(value, maxLength = 15) {
+    const contentLength = String(value).replace("-", "").length;
+
+    if(contentLength < maxLength) {
+        return true;
+    } else {
+        displayErrorMessage("Input exceeds 15 characters. Please simplify the number or use fewer digits.");
+        return false;
+    }
+}
+
+const displayErrorMessage = function(message) {
+    messageErrorDiv.textContent = message;
+    messageErrorDiv.classList.add("show");
+    setTimeout(() => messageErrorDiv.classList.remove("show"), 5000);
+};
+
+const updateDisplay = function(displayValue) {
+    displayContent = displayValue;
+    display.textContent = displayContent;
 }
 
 digitButtons.forEach(button => {

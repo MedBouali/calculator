@@ -2,6 +2,7 @@ body {
     background-image: linear-gradient(140deg, #c3e3f7 0%, #d2d3ec 50%, #aaacf5 75%);
     font-family: 'Courier New', Courier, monospace;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -14,20 +15,21 @@ body {
     border: 2px solid #5f5f92;
     border-radius: 16px;
     padding: 8px;
-    width: 370px;
-    height: 450px;
+    width: 420px;
+    height: 520px;
     gap: 10px;
     box-shadow: 0 0 20px 0px #040404;
+    flex-shrink: 0;
 }
 
 .display {
     background-color: #e8e8f6;
     border-radius: 10px;
-    font-size: 56px;
+    font-size: 42px;
     font-weight: 600;
     color: #0f102c;
     text-align: right;
-    padding: 6px;
+    padding: 18px 8px 18px 8px;
 }
 
 .buttons {
@@ -71,3 +73,22 @@ body {
 .ope-btn, .equ-btn {
     background-color: #6666e1;
 }
+
+.error-message {
+    position: absolute;
+    top: 2%;
+    visibility: hidden;
+    background-color: rgba(254, 209, 209, 0.6);
+    color: #6c1818;
+    border: 1px solid #a75f5f;
+    border-radius: 10px;
+    padding: 8px 20px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.error-message.show {
+    visibility: visible;
+    opacity: 1;
+  }
