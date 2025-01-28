@@ -143,7 +143,37 @@ const displayErrorMessage = function(message) {
 
 const updateDisplay = function(displayValue) {
     displayContent = displayValue;
+
+    if(displayContent === "" || displayContent === "-") {
+        displayContent = "0";
+    }
+
     display.textContent = displayContent;
+}
+
+const onKeyboardClick = function(event) {
+    const isDigit = (event.key >= "0" && event.key <= "9") || event.key === ".";
+    const isOperator = event.key === "+" || event.key === "-" || event.key === "*" || event.key === "/";
+
+    switch(true) {
+        case isDigit:
+            onDigitButtonClick(event.key);
+            break;
+        case event.key === "Backspace":
+            updateDisplay(displayContent.slice(0, -1));
+            break;
+        case isOperator:
+            onOperatorButtonClick(event.key);
+            break;
+        case event.key === "=":
+            onEqualsButtonClick();
+            break;
+        case event.key === "%":
+            onPercentageButtonClick();
+            break; 
+        default:
+            break;
+    }
 }
 
 digitButtons.forEach(button => {
@@ -161,3 +191,5 @@ functionButtons.forEach(button => {
     if(button.textContent === "+/-") button.addEventListener("click", onNegateButtonClick);
     if(button.textContent === "%") button.addEventListener("click",onPercentageButtonClick);
 });
+
+document.addEventListener("keydown", (event) => onKeyboardClick(event));
