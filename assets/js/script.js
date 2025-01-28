@@ -9,7 +9,11 @@ const digitButtons = document.querySelectorAll(".num-btn");
 const operatorButtons = document.querySelectorAll(".ope-btn");
 const equalsButton = document.querySelector(".equ-btn");
 const functionButtons = document.querySelectorAll(".fun-btn");
+const clearButton = document.querySelector(".clr-btn");
+const deleteButton = document.querySelector(".del-btn");
 const messageErrorDiv = document.querySelector(".error-message");
+const shortcutsButton = document.querySelector(".shortcuts-btn");
+const shortcutsDiv = document.querySelector(".keyboard-shortcuts");
 
 const add = function(a, b) {
     return a + b;
@@ -53,7 +57,7 @@ const onDigitButtonClick = function(digitButtonValue) {
     if(isWithinMaxLength(displayContent)) {
         updateDisplay(displayContent + digitButtonValue);
         clearDisplay = false;
-    }   
+    }
 }
 
 const onOperatorButtonClick = function(operatorButtonValue) {
@@ -80,12 +84,16 @@ const onEqualsButtonClick = function() {
     }
 }
 
-const onAllClearButtonClick = function() {
-    firstNumber = "";
-    secondNumber = ""
-    operator = "";
+const onClearButtonClick = function() {
+    if(clearButton.textContent === "AC") {
+        firstNumber = "";
+        secondNumber = ""
+        operator = "";
+        clearDisplay = true;
+    }
+
     updateDisplay("0");
-    clearDisplay = true;
+    clearButton.textContent = "AC";
 }
 
 const onNegateButtonClick = function() {
@@ -103,6 +111,10 @@ const onPercentageButtonClick = function() {
     updateDisplay(formatLargeNumber(percentageResult));
     
     clearDisplay = true;
+}
+
+const onDeleteButtonClick = function() {
+    updateDisplay(displayContent.slice(0, -1));
 }
 
 const formatLargeNumber = function(number) {
@@ -143,9 +155,11 @@ const displayErrorMessage = function(message) {
 
 const updateDisplay = function(displayValue) {
     displayContent = displayValue;
+    clearButton.textContent = "C";
 
     if(displayContent === "" || displayContent === "-") {
         displayContent = "0";
+        clearButton.textContent = "AC";
     }
 
     display.textContent = displayContent;
@@ -160,19 +174,35 @@ const onKeyboardClick = function(event) {
             onDigitButtonClick(event.key);
             break;
         case event.key === "Backspace":
-            updateDisplay(displayContent.slice(0, -1));
+            onDeleteButtonClick();
             break;
         case isOperator:
             onOperatorButtonClick(event.key);
             break;
-        case event.key === "=":
+        case event.key === "=" || event.key === "Enter":
             onEqualsButtonClick();
             break;
         case event.key === "%":
             onPercentageButtonClick();
             break; 
+        case event.key === "Escape":
+            clearButton.textContent = "AC";
+            onClearButtonClick();
+            break;
         default:
             break;
+    }
+
+    event.target.blur();
+}
+
+const onShortcutsButtonClick = function() {
+    if(shortcutsDiv.classList.contains("show")){
+        shortcutsDiv.classList.remove("show");
+        shortcutsButton.textContent = "Show Keyboard Shortcuts";
+    } else {
+        shortcutsDiv.classList.add("show");
+        shortcutsButton.textContent = "Hide Keyboard Shortcuts";
     }
 }
 
@@ -187,9 +217,14 @@ operatorButtons.forEach(button => {
 equalsButton.addEventListener("click", onEqualsButtonClick);
 
 functionButtons.forEach(button => {
-    if(button.textContent === "AC") button.addEventListener("click", onAllClearButtonClick);
     if(button.textContent === "+/-") button.addEventListener("click", onNegateButtonClick);
-    if(button.textContent === "%") button.addEventListener("click",onPercentageButtonClick);
+    if(button.textContent === "%") button.addEventListener("click", onPercentageButtonClick);
 });
 
+clearButton.addEventListener("click", onClearButtonClick);
+
+deleteButton.addEventListener("click", onDeleteButtonClick);
+
 document.addEventListener("keydown", (event) => onKeyboardClick(event));
+
+shortcutsButton.addEventListener("click", onShortcutsButtonClick);
