@@ -67,8 +67,13 @@ const onOperatorButtonClick = function(operatorButtonValue) {
 const onEqualsButtonClick = function() {
     if(operator !== "" && !clearDisplay) {
         secondNumber = displayContent;
-        const operationResult = operate(operator, firstNumber, secondNumber);
-        updateDisplay(formatLargeNumber(operationResult));
+
+        if(operator === "/" && secondNumber === "0") {
+            displayErrorMessage("Dude, seriously? You can't divide by zero. Try again!");
+        } else {
+            const operationResult = operate(operator, firstNumber, secondNumber);
+            updateDisplay(formatLargeNumber(operationResult));
+        }
         
         operator = "";
         clearDisplay = true;
